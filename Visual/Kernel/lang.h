@@ -1,110 +1,122 @@
-#include <iostream> //Includes iostream directory
-#include <windows.h>
-#include "fmakeapp.h"
-#include "lang.h"
-#include <fstream>
+#include <iostream>
+#include <string>
 using namespace std;
 
-//runtime variables
-string startup;
-bool kernelOn=false;
-string kernelName="PearTree_kernel";
-string version="vBETARELEASE:0.0.1.0";
-string commandInp;
-string currentPosition="C:/PEARTREEOS";
+string varVal;
+string varName;
+int intVal;
+string intName;
+string commandDatabase[4]={"PRINT:","VARIABLE:","READ:","IF:"};
 
-int main();
-void command_operator();
+int printCall();
+int variableCall();
+int readCall();
+int ifCall();
 
-void commandParser(string currentPos,string commandSent){
-	if(currentPos=="C:/PEARTREEOS"){
-		if(commandSent=="open<<.kernel"){
-			currentPosition="C:/PEARTREEOS/KERNEL";
-			command_operator();
-		}
-		else{
-			cout <<"ERROR: Kernel not booted. Boot the kernel."<< endl;
-			system("pause");
-			system("cls");
-			command_operator();
-		}
+int commandInputer(){
+	
+	cout <<">> ";
+	string input;
+	cin >> input;
+	
+	if(input=="PRINT:"){
+		printCall();
 	}
-	
-	if(currentPos=="C:/PEARTREEOS/KERNEL"){
-		if(commandSent=="open<<.folder"){
-			currentPosition="C:/PEARTREEOS/KERNEL/Folder";
-			command_operator();
-		}
-		else{
-			command_operator();
-		}
+	else if(input=="VAR:"){
+		variableCall();
 	}
-	
-	if(currentPos=="C:/PEARTREEOS/KERNEL/Folder"){
-		if(commandSent=="app<<.fmake"){
-			fmakeNew("KRNLOUT");
-			command_operator();
-		}
-		
-		if(commandSent=="app<<.toolkit"){
-			system("cls");
-			commandInputer();
-		}
-		
-		if(commandSent=="<back()>"){
-			currentPosition="C:/PEARTREEOS/KERNEL";
-			command_operator();
-		}
-		else{
-			command_operator();
-		}
+	else if(input=="READ:"){
+		readCall();
 	}
-}
-
-void command_operator(){
-	cout << currentPosition << ">> ";
-	
-	cin >> commandInp;
-	
-	commandParser(currentPosition,commandInp);
-}
-
-int loop(){
-   	cout <<"              DISCLAIMER:"<< endl;
-   	cout <<" This project is legally owned by 3STRIPE"<< endl;
-	   cout <<"ONLY 3SRTIPE OWNS THE RIGHTS TO USE THIS PROGRAM\n\n";
-   	cout <<"               "<< endl;
-   	cout <<" Any code-stealing will result in a lawsuit\n\n"<< endl;
-	   cout <<"     ******************************"<< endl;
-   	cout <<"     ******************************"<< endl;
-   	cout <<"     ***                        ***"<< endl;
-   	cout <<"     **    TYPE START TO START   **"<< endl;
-   	cout <<"     **        THE KERNEL        **"<< endl;
-	   cout <<"     **                          **"<< endl;
-	   cout <<"     **     3STRIPE SOFTWARE     **"<< endl;
-	   cout <<"     **                          **"<< endl;
-	   cout <<"     **      3STRIPE 2020        **"<< endl;
-	   cout <<"     **                          **"<< endl;
-	   cout <<"     ***                        ***"<< endl;
-	   cout <<"     ******************************"<< endl;
-	   cout <<"     ******************************"<< endl;
-	
-      cin >> startup;
-      currentPosition="C:/PEARTREEOS";
-      system("cls");
-}
-
-int main(){
-	system("mode 650");
-	loop();
-	
-	if(startup=="start"){
-		kernelOn=true;
-		while(kernelOn==true){
-			command_operator();
-		}
+	else if(input=="IF:"){
+		ifCall();
+	}
+	else if(input=="exit:toolkit"){
+		system("pause");
+		system("cls");
 	}
 	else{
-		loop();
+		commandInputer();
 	}
+}
+
+int ifCall(){
+	string boolState;
+	cout <<"......";
+	cin >> boolState;
+	if(boolState=="=="){
+		string varInpName;
+		cout <<"......";
+		cin >> varInpName;
+		cout <<"......";
+		string value;
+		cin >> value;
+		if(varInpName==varName){
+			if(varVal==value){
+				cout <<"BASECAP CPU: STATEMENT TRUE!"<< endl;
+				commandInputer();
+			}
+			else{
+				cout <<"BASECAP CPU: STATEMENT FALSE!"<< endl;
+				commandInputer();
+			}
+		}
+		else{
+			commandInputer();
+		}
+	}
+}
+
+int readCall(){
+	cout <<"type:";
+	string varType;
+	cin >> varType;
+	
+	if(varType=="var"){
+		cout <<"......";
+		string varPassName;
+		cin >> varPassName;
+		if(varPassName==varName){
+			cout <<"BASECAP CPU: "<< varVal << endl;
+		}
+	}
+	else if(varType=="int"){
+		cout <<"......";
+		string intPassName;
+		cin >> intPassName;
+		if(intPassName==intName){
+			cout <<"BASECAP CPU: "<< intVal << endl;
+		}
+	}
+	
+	commandInputer();
+}
+
+int variableCall(){
+	cout <<"int/var:";
+	string intOrVar;
+	cin >> intOrVar;
+	if(intOrVar=="var"){
+		cout <<"......";
+      cin >> varName;
+	   cout << varName << "=";
+	
+      cin >> varVal;
+	}
+	else{
+		cout <<"......";
+	   cin >> intName;
+	   cout << intName << "=";
+	   
+	   cin >> intVal;
+	}
+	commandInputer();
+}
+
+int printCall(){
+	cout <<"......";
+	string outputer;
+	cin >> outputer;
+	cout <<"BASECAP CPU: "<< outputer<< endl;
+	commandInputer();
 }
